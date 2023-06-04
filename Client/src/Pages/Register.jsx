@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from "styled-components"
 import axios from "axios";
 import Logo from "../assets/logo.svg";
-import { Link } from 'react-router-dom';
+import {useNavigate,  Link } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../utlis/APIROUTES";
 export default function Register() {
+  const navigate = useNavigate();
     const toastOptions = {
         position: "bottom-center",
         autoClose: 3000,
@@ -14,6 +15,12 @@ export default function Register() {
         draggable: true,
         theme: "dark",
       };
+
+      useEffect(() => {
+        if (localStorage.getItem("chat app user")) {
+          navigate("/");
+        }
+      }, []);
 
     const [values, setValues] = useState({
         username: "",
@@ -35,9 +42,22 @@ export default function Register() {
               password,
              
             });
+            if (data.status === false) {
+              toast.error(data.msg, toastOptions);
+            }
+            if (data.status === true) {
+              localStorage.setItem(
+                "chat app user",
+                JSON.stringify(data.user)
+              );
+              navigate("/");
+            }
+          }
+
+            
         }
 
-    }
+    
     const handleValidation = () => {
         const {   username, email,password, confirmPassword, } = values;
         if (password !== confirmPassword) {

@@ -10,8 +10,8 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", userRoutes);
 
+app.use("/api/auth", userRoutes);
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -23,6 +23,8 @@ mongoose.connect(process.env.MONGO_URL, {
   .catch((err) => {
     console.log(err.message);
   });
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
 });
+
+
